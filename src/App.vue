@@ -25,14 +25,14 @@ export default {
             title: this.title,
             details: this.details
           }
-      ).then(axios.get('http://localhost:8000/api/tasks').then(response => (this.tasks = response.data)))
+      ).then(axios.get('http://localhost:8000/api/tasks').then(response => (this.tasks = response.data))).then(location.reload())
     } catch(err) {
         console.log(err);
       }
     },
       async cancelTask(id) {
         try {
-          await axios.delete('http://localhost:8000/api/tasks/' + id).then(axios.get('http://localhost:8000/api/tasks').then(response => (this.tasks = response.data)))
+          await axios.delete('http://localhost:8000/api/tasks/' + id).then(axios.get('http://localhost:8000/api/tasks').then(response => (this.tasks = response.data))).then(location.reload())
         } catch(err){
           console.log(err)
     }
