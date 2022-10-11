@@ -1,30 +1,70 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+<script>
+import {onMounted, ref, reactive} from 'vue'
+import axios from 'axios'
+
+export default {
+  name: "Tasks",
+  data() {
+    return {
+      tasks: [],
+      task: {},
+      title: '',
+      details: '',
+      id: '',
+    }
+  },
+  mounted() {
+      axios.get('http://localhost:8000/api/tasks').then(response => (this.tasks = response.data))
+  },
+  methods: {
+      async makeTask() {
+      try {
+        const newApp = await axios.post(
+          'http://localhost:8000/api/tasks',
+          {
+            title: this.title,
+            details: this.details
+          }
+      ).then(axios.get('http://localhost:8000/api/tasks').then(response => (this.tasks = response.data)))
+    } catch(err) {
+        console.log(err);
+      }
+    },
+      async cancelTask(id) {
+        try {
+          await axios.delete('http://localhost:8000/api/tasks/' + id).then(axios.get('http://localhost:8000/api/tasks').then(response => (this.tasks = response.data)))
+        } catch(err){
+          console.log(err)
+    }
+}
+}
+}
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  <h1>
+    Vue To-Do List
+  </h1>
+  <div class = 'taskCard' v-for='task in tasks'>
+   <h2>{{task.title}}</h2>
+   <p>{{task.details}}</p>
+   <button @click='cancelTask(task.id)'>Complete</button>
+  </div>
+  <form v-on:submit.prevent='preventDefault'>
+    <p>Title:<input type='text' v-model='title'></p>
+    <p>Details:<input type='text' v-model='details'></p>
+    <input type='submit' value='Add Task' @click='makeTask'>
+  </form>
 </template>
 
 <style scoped>
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+.taskCard {
+  background-color: grey;
+  text-align: center;
+  padding: 25px;
+  margin: 20px;
+  color: white;
 }
 
 @media (min-width: 1024px) {
