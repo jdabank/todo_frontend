@@ -51,8 +51,10 @@ export default {
    <button @click='cancelTask(task.id)'>Complete</button>
   </div>
   <form v-on:submit.prevent='preventDefault'>
-    <p>Title:<input type='text' v-model='title'></p>
-    <p>Details:<input type='text' v-model='details'></p>
+    <p>Title</p>
+    <input type='text' v-model='title'>
+    <p>Details</p>
+    <input type='text' v-model='details'><br/>
     <input type='submit' value='Add Task' @click='makeTask'>
   </form>
 </template>
@@ -64,6 +66,25 @@ export default {
   text-align: center;
   padding: 25px;
   margin: 20px;
+  color: white;
+}
+
+form {
+  background-color: grey;
+  margin: 0 auto;
+  color: white;
+  max-width: 50%;
+  text-align: center;
+  padding: 10px;
+}
+
+button {
+  background-color: white;
+  border: none;
+}
+
+button:hover {
+  background-color: skyblue;
   color: white;
 }
 
